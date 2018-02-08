@@ -2,6 +2,7 @@
 
 namespace Richdynamix\Chatbase\Service;
 
+use Richdynamix\Chatbase\Exceptions\MissingRequiredFields;
 use Richdynamix\Chatbase\Exceptions\WrongDataSet;
 use Richdynamix\Chatbase\Contracts\ChatbaseClient;
 use Richdynamix\Chatbase\Contracts\GenericMessage as Contract;
@@ -35,6 +36,8 @@ class GenericMessage implements Contract
      */
     public function recordFailedMessage(array $data)
     {
+        $this->handleRequiredFields($data);
+
         return $this->send(self::SINGLE_MESSAGE_URI, array_merge($data, [
             'api_key' => $this->apiKey,
             'not_handled' => true,
@@ -49,6 +52,8 @@ class GenericMessage implements Contract
      */
     public function recordBotMessage(array $data)
     {
+        $this->handleRequiredFields($data);
+
         return $this->send(self::SINGLE_MESSAGE_URI, array_merge($data, [
             'api_key' => $this->apiKey,
             'type' => 'agent',
@@ -62,6 +67,8 @@ class GenericMessage implements Contract
      */
     public function recordMessage(array $data)
     {
+        $this->handleRequiredFields($data);
+
         return $this->send(self::SINGLE_MESSAGE_URI, array_merge($data, [
             'api_key' => $this->apiKey,
             'type' => 'user',
@@ -123,5 +130,20 @@ class GenericMessage implements Contract
         }
 
         return $data;
+    }
+
+    /**
+     * @param array $data
+     * @throws MissingRequiredFields
+     */
+    private function handleRequiredFields(array $data): void
+    {
+        if (!isset($data['user_id'])) {
+            throw MissingRequiredFields::userIdRequired();
+        }
+
+        if (!isset($data['platform'])) {
+            throw MissingRequiredFields::platformRequired();
+        }
     }
 }

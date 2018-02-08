@@ -174,15 +174,6 @@ Response -
     }
 ```
 
-
-## Testing
-
-Run the tests with:
-
-``` bash
-vendor/bin/phpunit
-```
-
 ### Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
