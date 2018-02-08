@@ -25,13 +25,13 @@ In Laravel >5.5 the package will autoregister the service provider. In Laravel 5
 ];
 ```
 
-In Laravel >5.5 the package will autoregister the facades. In Laravel 5.4 you must install the facade manually.
+In Laravel >5.5 the package will auto register the facades. In Laravel 5.4 you must install the facade manually.
 
 ```php
 // config/app.php
 'aliases' => [
     ...
-    'CbMessage' => Richdynamix\Chatbase\Facades\CbMessage::class,
+    'Chatbase' => Richdynamix\Chatbase\Facades\Chatbase::class,
     ...
 ];
 ```
@@ -39,13 +39,16 @@ In Laravel >5.5 the package will autoregister the facades. In Laravel 5.4 you mu
 You can publish the config file of this package with this command:
 
 ``` bash
-php artisan vendor:publish --providesr="Richdynamix\Chatbase\ChatbaseServiceProvider"
+php artisan vendor:publish --provider="Richdynamix\Chatbase\ChatbaseServiceProvider"
 ```
 
 The following config file will be published in `config/chatbase.php`
 
 ```php
 return [
+    /*
+     * The Chatbase API key
+     */
     'api_key' => env('CHATBASE_API_KEY'),
 ];
 ```
@@ -89,19 +92,19 @@ Alternatively you may use the `Chatbase` facade directly
     Chatbase::recordBotMessage($data)
 ```
 
-In the above examples, `$data` is an array to be sent to Chatbase. The `api_key`, `time_stamp` and `type` will be set automatically. The only required fields are `user_id` and `platform`. However, it's highly recommended you set a `message` and `intent` to maximise the analytics stored about your bot.
+In the above examples, `$data` is an array to be sent to Chatbase.
 
 #### Fields to be set in `$data` array
 
 
 | field               | type   | required | description |
 | ------------------- | ------ | -------- | ----------- |
-| `user_id`           | string | Y        | the ID of the end-user |
-| `platform`          | string | Y        | valid values "Facebook", "SMS", "Web", "Android", "iOS", "Actions", "Alexa", "Cortana", "Kik", "Skype", "Twitter", "Viber", "Telegram", "Slack", "WhatsApp", "WeChat", "Line", "Kakao" or a custom name like "Workplace" or "OurPlatform" |
-| `message`           | string | N        | the raw message body regardless of type for example a typed-in or a tapped button or tapped image |
-| `intent`            | string | N        | set for user messages only; if not set usage metrics will not be shown per intent; do not set if it is a generic catch all intent, like default fallback, so that clusters of similar messages can be reported |
-| `version`           | string | N        | set for user and bot messages; used to track versions of your code or to track A/B tests |
-| `custom_session_id` | string | N        | set for user and bot messages; used to define your own custom sessions for Session Flow report and daily session metrics |
+| user_id           | string | Y        | the ID of the end-user |
+| platform          | string | Y        | valid values "Facebook", "SMS", "Web", "Android", "iOS", "Actions", "Alexa", "Cortana", "Kik", "Skype", "Twitter", "Viber", "Telegram", "Slack", "WhatsApp", "WeChat", "Line", "Kakao" or a custom name like "Workplace" or "OurPlatform" |
+| message           | string | N        | the raw message body regardless of type for example a typed-in or a tapped button or tapped image |
+| intent            | string | N        | set for user messages only; if not set usage metrics will not be shown per intent; do not set if it is a generic catch all intent, like default fallback, so that clusters of similar messages can be reported |
+| version           | string | N        | set for user and bot messages; used to track versions of your code or to track A/B tests |
+| custom_session_id | string | N        | set for user and bot messages; used to define your own custom sessions for Session Flow report and daily session metrics |
 
 ## Usage
 
