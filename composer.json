@@ -1,0 +1,45 @@
+{
+    "name": "richdynamix/chatbase-api",
+    "description": "PHP SDK Wrapper for the Chatbase API (unofficial)",
+    "type": "library",
+    "require": {
+        "guzzlehttp/guzzle": "^6.3",
+        "illuminate/contracts": "~5.4.0|~5.5.0",
+        "illuminate/support": "~5.4.0|~5.5.0",
+        "nesbot/carbon": "^1.22"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.0",
+        "phpmd/phpmd": "^2.6",
+        "squizlabs/php_codesniffer": "*"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Steven Richardson",
+            "email": "steven@richdynamix.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Richdynamix\\Chatbase\\": "src/",
+            "Tests\\": "tests/"
+        }
+    },
+    "autoload-dev": {
+        "classmap": [
+            "tests/TestCase.php"
+        ]
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Richdynamix\\Chatbase\\ChatbaseServiceProvider"
+            ],
+            "aliases": {
+                "Chatbase": "Richdynamix\\Chatbase\\ChatbaseFacade"
+            }
+        }
+    },
+    "minimum-stability": "dev"
+}
