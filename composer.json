@@ -37,7 +37,7 @@
                 "Richdynamix\\Chatbase\\ChatbaseServiceProvider"
             ],
             "aliases": {
-                "Chatbase": "Richdynamix\\Chatbase\\ChatbaseFacade"
+                "Chatbase": "Richdynamix\\Chatbase\\Facades\\Chatbase"
             }
         }
     },

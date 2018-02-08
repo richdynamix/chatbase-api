@@ -8,7 +8,7 @@ use Richdynamix\Chatbase\Contracts\GenericMessage;
 /**
  * @see \Richdynamix\Chatbase\Service\GenericMessage
  */
-class CbMessage extends Facade
+class Chatbase extends Facade
 {
     /**
      * @return string

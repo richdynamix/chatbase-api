@@ -11,23 +11,23 @@ interface GenericMessage
      * @param array $data
      * @return array
      */
-    public function sendOne(array $data);
+    public function recordMessage(array $data);
 
     /**
      * @param array $data
      * @return array
      */
-    public function sendFailedMessage(array $data);
+    public function recordFailedMessage(array $data);
 
     /**
      * @param array $data
      * @return array
      */
-    public function sendBotMessage(array $data);
+    public function recordBotMessage(array $data);
 
     /**
      * @param array $messages
      * @return array
      */
-    public function sendMultiple(array $messages);
+    public function recordMultiple(array $messages);
 }

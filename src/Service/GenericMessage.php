@@ -33,7 +33,7 @@ class GenericMessage implements Contract
      * @param array $data
      * @return array
      */
-    public function sendFailedMessage(array $data)
+    public function recordFailedMessage(array $data)
     {
         return $this->send(self::SINGLE_MESSAGE_URI, array_merge($data, [
             'api_key' => $this->apiKey,
@@ -47,7 +47,7 @@ class GenericMessage implements Contract
      * @param array $data
      * @return array
      */
-    public function sendBotMessage(array $data)
+    public function recordBotMessage(array $data)
     {
         return $this->send(self::SINGLE_MESSAGE_URI, array_merge($data, [
             'api_key' => $this->apiKey,
@@ -60,7 +60,7 @@ class GenericMessage implements Contract
      * @param array $data
      * @return array
      */
-    public function sendOne(array $data)
+    public function recordMessage(array $data)
     {
         return $this->send(self::SINGLE_MESSAGE_URI, array_merge($data, [
             'api_key' => $this->apiKey,
@@ -74,7 +74,7 @@ class GenericMessage implements Contract
      * @return mixed
      * @throws WrongDataSet
      */
-    public function sendMultiple(array $messages)
+    public function recordMultiple(array $messages)
     {
         if (isset($messages[0]) && is_array($messages[0])) {
             $data = $this->prepareMultipleMessages($messages);
