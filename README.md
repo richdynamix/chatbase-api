@@ -1,5 +1,10 @@
 #  Chatbase API for Laravel
 
+This is the unofficial Laravel Chatbase API SDK. Chatbase is a Chatbot analytics service by Google.
+
+**HELP WANTED**
+
+I have started this project to accomodate my own needs. Development is pretty much on an AdHoc basis however I recognise there is far more features required for this project. If you have spare time and would like to contribute then please feel free.
 
 ## Installation
 
