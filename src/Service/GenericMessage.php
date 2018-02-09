@@ -73,7 +73,7 @@ class GenericMessage implements Contract
      */
     public function notHandledUserMessage(...$params)
     {
-        $data = $this->fieldsManager->setType('agent')->notHandled()->getFieldsToSend($params);
+        $data = $this->fieldsManager->notHandled()->getFieldsToSend($params);
 
         return $this->send(self::SINGLE_MESSAGE_URI, $data);
     }
