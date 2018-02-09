@@ -7,21 +7,9 @@ interface GenericMessage
     const SINGLE_MESSAGE_URI = '/message';
     const MULTIPLE_MESSAGE_URI = '/messages';
 
-    /**
-     * @param array ...$fields
-     * @return mixed
-     */
-    public function userMessage(...$fields);
+    public function userMessage();
 
-    /**
-     * @param array ...$fields
-     * @return mixed
-     */
-    public function notHandledUserMessage(...$fields);
+    public function notHandledUserMessage();
 
-    /**
-     * @param array ...$fields
-     * @return mixed
-     */
-    public function botMessage(...$fields);
+    public function botMessage();
 }

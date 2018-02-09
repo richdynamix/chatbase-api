@@ -4,24 +4,7 @@ namespace Richdynamix\Chatbase\Entities;
 
 class FieldsManager
 {
-    protected $fields = [
-        'user_id',
-        'message',
-        'intent',
-        'version',
-        'custom_session_id'
-    ];
-
     protected $data = [];
-    protected $apiKey = '';
-    protected $message = '';
-    protected $platform = '';
-    protected $intent = '';
-    protected $version = '';
-    protected $customSessionId = '';
-    protected $notHandled = false;
-    protected $type = 'user';
-    protected $timeStamp = '';
 
     /**
      * FieldsManager constructor.
@@ -30,48 +13,34 @@ class FieldsManager
      */
     public function __construct(string $apiKey, string $platform)
     {
-        $this->apiKey = $apiKey;
-        $this->platform = $platform;
-    }
-
-    /**
-     * @return string
-     */
-    public function getApiKey(): string
-    {
-        return $this->apiKey;
+        $this->data = [
+            'api_key' => $apiKey,
+            'platform' => $platform,
+            'type' => 'user',
+            'time_stamp' => $this->getTimeStamp(),
+        ];
     }
 
     /**
      * @param string $apiKey
+     * @return $this
      */
     public function setApiKey(string $apiKey)
     {
-        $this->apiKey = $apiKey;
-    }
+        $this->data['api_key'] = $apiKey;
 
-    /**
-     * @return string
-     */
-    public function getPlatform(): string
-    {
-        return $this->platform;
+        return $this;
     }
 
     /**
      * @param string $platform
+     * @return $this
      */
     public function setPlatform(string $platform)
     {
-        $this->platform = $platform;
-    }
+        $this->data['platform'] = $platform;
 
-    /**
-     * @return string
-     */
-    public function getNotHandled(): string
-    {
-        return $this->notHandled;
+        return $this;
     }
 
     /**
@@ -79,17 +48,9 @@ class FieldsManager
      */
     public function notHandled()
     {
-        $this->notHandled = true;
+        $this->data['not_handled'] = true;
 
         return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getType(): string
-    {
-        return $this->type;
     }
 
     /**
@@ -98,7 +59,62 @@ class FieldsManager
      */
     public function setType(string $type)
     {
-        $this->type = $type;
+        $this->data['type'] = $type;
+
+        return $this;
+    }
+
+    /**
+     * @param string $intent
+     * @return $this
+     */
+    public function setIntent(string $intent)
+    {
+        $this->data['intent'] = $intent;
+
+        return $this;
+    }
+
+    /**
+     * @param string $customSessionId
+     * @return $this
+     */
+    public function setCustomSessionId(string $customSessionId)
+    {
+        $this->data['custom_session_id'] = $customSessionId;
+
+        return $this;
+    }
+
+    /**
+     * @param string $version
+     * @return $this
+     */
+    public function setVersion(string $version)
+    {
+        $this->data['version'] = $version;
+
+        return $this;
+    }
+
+    /**
+     * @param string $message
+     * @return $this
+     */
+    public function setMessage(string $message)
+    {
+        $this->data['message'] = $message;
+
+        return $this;
+    }
+
+    /**
+     * @param string $userId
+     * @return $this
+     */
+    public function setUserId(string $userId)
+    {
+        $this->data['user_id'] = $userId;
 
         return $this;
     }
@@ -116,30 +132,19 @@ class FieldsManager
     /**
      * @return array
      */
-    public function getData(): array
+    public function getData()
     {
-        $this->data = [
-            'api_key' => $this->getApiKey(),
-            'platform' => $this->getPlatform(),
-            'type' => $this->getType(),
-            'time_stamp' => $this->getTimeStamp(),
-        ];
-
-        if ($this->notHandled) {
-            $this->data['not_handled'] = true;
-        }
-
         return $this->data;
     }
 
     /**
-     * @param array ...$params
-     * @return array
+     * @param array $data
+     * @return $this
      */
-    public function getFieldsToSend(...$params)
+    public function mergeFieldsToSend(array $data)
     {
-        array_splice($this->fields, (count($params)));
+        $this->data = array_merge($this->data, $data);
 
-        return array_merge(array_combine($this->fields, $params), $this->getData());
+        return $this;
     }
 }

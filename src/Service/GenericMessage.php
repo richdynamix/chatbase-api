@@ -35,6 +35,61 @@ class GenericMessage implements Contract
     }
 
     /**
+     * @param $userId
+     * @return $this
+     */
+    public function withUserId($userId)
+    {
+        $this->fieldsManager->setUserId($userId);
+
+        return $this;
+    }
+
+    /**
+     * @param $intent
+     * @return $this
+     */
+    public function withIntent($intent)
+    {
+        $this->fieldsManager->setIntent($intent);
+
+        return $this;
+    }
+
+    /**
+     * @param $message
+     * @return $this
+     */
+    public function withMessage($message)
+    {
+        $this->fieldsManager->setMessage($message);
+
+        return $this;
+    }
+
+    /**
+     * @param $version
+     * @return $this
+     */
+    public function withVersion($version)
+    {
+        $this->fieldsManager->setVersion($version);
+
+        return $this;
+    }
+
+    /**
+     * @param $customSessionId
+     * @return $this
+     */
+    public function withCustomSessionId($customSessionId)
+    {
+        $this->fieldsManager->setCustomSessionId($customSessionId);
+
+        return $this;
+    }
+
+    /**
      * @param string $apiKey
      * @return $this
      */
@@ -46,36 +101,50 @@ class GenericMessage implements Contract
     }
 
     /**
-     * @param array ...$params
-     * @return mixed
+     * @param array $fields
+     * @return $this
      */
-    public function userMessage(...$params)
+    public function with(array $fields)
     {
-        $data = $this->fieldsManager->getFieldsToSend($params);
+        $this->fieldsManager->mergeFieldsToSend($fields);
 
-        return $this->send(self::SINGLE_MESSAGE_URI, $data);
+        return $this;
     }
 
     /**
-     * @param array ...$params
      * @return mixed
      */
-    public function botMessage(...$params)
+    public function userMessage()
     {
-        $data = $this->fieldsManager->setType('agent')->getFieldsToSend($params);
-
-        return $this->send(self::SINGLE_MESSAGE_URI, $data);
+        return $this;
     }
 
     /**
-     * @param array ...$params
      * @return mixed
      */
-    public function notHandledUserMessage(...$params)
+    public function botMessage()
     {
-        $data = $this->fieldsManager->notHandled()->getFieldsToSend($params);
+        $this->fieldsManager->setType('agent');
 
-        return $this->send(self::SINGLE_MESSAGE_URI, $data);
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function notHandledUserMessage()
+    {
+        $this->fieldsManager->notHandled();
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function send()
+    {
+        return $this->sendToChatbase(self::SINGLE_MESSAGE_URI, $this->fieldsManager->getData());
     }
 
     /**
@@ -83,7 +152,7 @@ class GenericMessage implements Contract
      * @param array $data
      * @return mixed
      */
-    private function send(string $uri, array $data)
+    private function sendToChatbase(string $uri, array $data)
     {
         $response = $this->client->post($uri, $data);
 
