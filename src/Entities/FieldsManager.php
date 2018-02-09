@@ -25,9 +25,8 @@ class FieldsManager
 
     /**
      * FieldsManager constructor.
-     * @param string $platform
      */
-    public function __construct($platform)
+    public function __construct()
     {
         $this->apiKey = config('chatbase.api_key');
         $this->platform = config('chatbase.platform');
