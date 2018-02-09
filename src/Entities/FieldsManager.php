@@ -25,11 +25,13 @@ class FieldsManager
 
     /**
      * FieldsManager constructor.
+     * @param string $apiKey
+     * @param string $platform
      */
-    public function __construct()
+    public function __construct(string $apiKey, string $platform)
     {
-        $this->apiKey = config('chatbase.api_key');
-        $this->platform = config('chatbase.platform');
+        $this->apiKey = $apiKey;
+        $this->platform = $platform;
     }
 
     /**
@@ -124,7 +126,7 @@ class FieldsManager
         ];
 
         if ($this->notHandled) {
-            $data['not_handled'] = true;
+            $this->data['not_handled'] = true;
         }
 
         return $this->data;

@@ -35,6 +35,12 @@ class ChatbaseServiceProvider extends ServiceProvider
             return new ChatbaseClient($guzzle);
         });
 
+        $this->app->bind(FieldsManager::class, function () {
+            $config = config('chatbase');
+
+            return new FieldsManager($config['api_key'], $config['platform']);
+        });
+
         $this->app->bind(GenericMessageContract::class, function () {
             $client = app(ChatbaseClientContract::class);
 
