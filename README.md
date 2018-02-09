@@ -91,8 +91,6 @@ Alternatively you may use the `Chatbase` facade directly
     Chatbase::botMessage($userId, $message, $intent, $version, $customSessionId)
 ```
 
-In the above examples, `$data` is an array to be sent to Chatbase.
-
 #### Parameters to be set in each method
 
 | field               | type   | required | description |
