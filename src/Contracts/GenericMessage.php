@@ -8,26 +8,20 @@ interface GenericMessage
     const MULTIPLE_MESSAGE_URI = '/messages';
 
     /**
-     * @param array $data
-     * @return array
+     * @param array ...$fields
+     * @return mixed
      */
-    public function recordMessage(array $data);
+    public function userMessage(...$fields);
 
     /**
-     * @param array $data
-     * @return array
+     * @param array ...$fields
+     * @return mixed
      */
-    public function recordFailedMessage(array $data);
+    public function notHandledUserMessage(...$fields);
 
     /**
-     * @param array $data
-     * @return array
+     * @param array ...$fields
+     * @return mixed
      */
-    public function recordBotMessage(array $data);
-
-    /**
-     * @param array $messages
-     * @return array
-     */
-    public function recordMultiple(array $messages);
+    public function botMessage(...$fields);
 }

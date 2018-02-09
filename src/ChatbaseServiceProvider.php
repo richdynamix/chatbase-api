@@ -4,9 +4,9 @@ namespace Richdynamix\Chatbase;
 
 use GuzzleHttp\Client;
 use Illuminate\Support\ServiceProvider;
+use Richdynamix\Chatbase\Entities\FieldsManager;
 use Richdynamix\Chatbase\Service\ChatbaseClient;
 use Richdynamix\Chatbase\Service\GenericMessage;
-use Richdynamix\Chatbase\Exceptions\InvalidConfiguration;
 use Richdynamix\Chatbase\Contracts\GenericMessage as GenericMessageContract;
 use Richdynamix\Chatbase\Contracts\ChatbaseClient as ChatbaseClientContract;
 
@@ -36,24 +36,11 @@ class ChatbaseServiceProvider extends ServiceProvider
         });
 
         $this->app->bind(GenericMessageContract::class, function () {
-            $config = config('chatbase');
-
-            $this->guardAgainstInvalidConfiguration($config);
-
             $client = app(ChatbaseClientContract::class);
 
-            return new GenericMessage($client, $config['api_key']);
-        });
-    }
+            $fieldsManager = app(FieldsManager::class);
 
-    /**
-     * @param array|null $config
-     * @throws InvalidConfiguration
-     */
-    protected function guardAgainstInvalidConfiguration(array $config = null)
-    {
-        if (empty($config['api_key'])) {
-            throw InvalidConfiguration::apiKeyNotSpecified();
-        }
+            return new GenericMessage($client, $fieldsManager);
+        });
     }
 }

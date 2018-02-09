@@ -2,148 +2,91 @@
 
 namespace Richdynamix\Chatbase\Service;
 
-use Richdynamix\Chatbase\Exceptions\MissingRequiredFields;
-use Richdynamix\Chatbase\Exceptions\WrongDataSet;
+use Richdynamix\Chatbase\Entities\FieldsManager;
 use Richdynamix\Chatbase\Contracts\ChatbaseClient;
 use Richdynamix\Chatbase\Contracts\GenericMessage as Contract;
 
 class GenericMessage implements Contract
 {
-    /**
-     * @var ChatbaseClient
-     */
     private $client;
 
-    /**
-     * @var string
-     */
-    private $apiKey;
+    private $fieldsManager;
 
     /**
      * GenericMessage constructor.
      * @param ChatbaseClient $client
-     * @param string $apiKey
+     * @param FieldsManager $fieldsManager
      */
-    public function __construct(ChatbaseClient $client, string $apiKey)
+    public function __construct(ChatbaseClient $client, FieldsManager $fieldsManager)
     {
         $this->client = $client;
-        $this->apiKey = $apiKey;
+        $this->fieldsManager = $fieldsManager;
     }
 
     /**
-     * @param array $data
-     * @return array
+     * @param string $platform
+     * @return $this
      */
-    public function recordFailedMessage(array $data)
+    public function setPlatform(string $platform)
     {
-        $this->handleRequiredFields($data);
+        $this->fieldsManager->setPlatform($platform);
 
-        return $this->send(self::SINGLE_MESSAGE_URI, array_merge($data, [
-            'api_key' => $this->apiKey,
-            'not_handled' => true,
-            'type' => 'user',
-            'time_stamp' => $this->getMilliseconds()
-        ]));
+        return $this;
     }
 
     /**
-     * @param array $data
-     * @return array
+     * @param string $apiKey
+     * @return $this
      */
-    public function recordBotMessage(array $data)
+    public function setApiKey(string $apiKey)
     {
-        $this->handleRequiredFields($data);
+        $this->fieldsManager->setApiKey($apiKey);
 
-        return $this->send(self::SINGLE_MESSAGE_URI, array_merge($data, [
-            'api_key' => $this->apiKey,
-            'type' => 'agent',
-            'time_stamp' => $this->getMilliseconds()
-        ]));
+        return $this;
     }
 
     /**
-     * @param array $data
-     * @return array
-     */
-    public function recordMessage(array $data)
-    {
-        $this->handleRequiredFields($data);
-
-        return $this->send(self::SINGLE_MESSAGE_URI, array_merge($data, [
-            'api_key' => $this->apiKey,
-            'type' => 'user',
-            'time_stamp' => $this->getMilliseconds()
-        ]));
-    }
-
-    /**
-     * @param array $messages
+     * @param array ...$params
      * @return mixed
-     * @throws WrongDataSet
      */
-    public function recordMultiple(array $messages)
+    public function userMessage(...$params)
     {
-        if (isset($messages[0]) && is_array($messages[0])) {
-            $data = $this->prepareMultipleMessages($messages);
+        $data = $this->fieldsManager->getFieldsToSend($params);
 
-            return $this->send(self::MULTIPLE_MESSAGE_URI, $data);
-        }
+        return $this->send(self::SINGLE_MESSAGE_URI, $data);
+    }
 
-        throw WrongDataSet::requiresMultipleMessages();
+    /**
+     * @param array ...$params
+     * @return mixed
+     */
+    public function botMessage(...$params)
+    {
+        $data = $this->fieldsManager->setType('agent')->getFieldsToSend($params);
+
+        return $this->send(self::SINGLE_MESSAGE_URI, $data);
+    }
+
+    /**
+     * @param array ...$params
+     * @return mixed
+     */
+    public function notHandledUserMessage(...$params)
+    {
+        $data = $this->fieldsManager->setType('agent')->notHandled()->getFieldsToSend($params);
+
+        return $this->send(self::SINGLE_MESSAGE_URI, $data);
     }
 
     /**
      * @param string $uri
      * @param array $data
-     * @return array
+     * @return mixed
      */
     private function send(string $uri, array $data)
     {
         $response = $this->client->post($uri, $data);
 
         return json_decode($response->getBody()->getContents());
-    }
-
-    /**
-     * @return string
-     */
-    private function getMilliseconds(): string
-    {
-        $microtime = round(microtime(true) * 1000);
-
-        return number_format($microtime, 0, ".", "");
-    }
-
-    /**
-     * @param array $messages
-     * @return array
-     */
-    private function prepareMultipleMessages(array $messages): array
-    {
-        $data = [];
-        foreach ($messages as $message) {
-            $data[] = array_merge($message, [
-                'api_key' => $this->apiKey,
-                'type' => 'user',
-                'time_stamp' => $this->getMilliseconds()
-            ]);
-        }
-
-        return $data;
-    }
-
-    /**
-     * @param array $data
-     * @throws MissingRequiredFields
-     */
-    private function handleRequiredFields(array $data): void
-    {
-        if (!isset($data['user_id'])) {
-            throw MissingRequiredFields::userIdRequired();
-        }
-
-        if (!isset($data['platform'])) {
-            throw MissingRequiredFields::platformRequired();
-        }
     }
 }
