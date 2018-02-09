@@ -98,10 +98,10 @@ In the above examples, `$data` is an array to be sent to Chatbase.
 | field               | type   | required | description |
 | ------------------- | ------ | -------- | ----------- |
 | $userId             | string | Y        | the ID of the end-user |
-| $message           | string | Y        | the raw message body regardless of type for example a typed-in or a tapped button or tapped image |
-| intent            | string | Y        | set for user messages only; if not set usage metrics will not be shown per intent; do not set if it is a generic catch all intent, like default fallback, so that clusters of similar messages can be reported |
-| version           | string | N        | set for user and bot messages; used to track versions of your code or to track A/B tests |
-| custom_session_id | string | N        | set for user and bot messages; used to define your own custom sessions for Session Flow report and daily session metrics |
+| $message            | string | Y        | the raw message body regardless of type for example a typed-in or a tapped button or tapped image |
+| $intent             | string | Y        | set for user messages only; if not set usage metrics will not be shown per intent; do not set if it is a generic catch all intent, like default fallback, so that clusters of similar messages can be reported |
+| $version            | string | N        | set for user and bot messages; used to track versions of your code or to track A/B tests |
+| $customSessionId    | string | N        | set for user and bot messages; used to define your own custom sessions for Session Flow report and daily session metrics |
 
 ## Usage
 
