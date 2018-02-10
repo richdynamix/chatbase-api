@@ -16,7 +16,7 @@ composer require richdynamix/chatbase-api
 
 ```php
 
-// API KEY and default platoform must be set
+// API KEY and default platform must be set
 $apiKey = '12345-12345-12345';
 $platform = 'messenger';
 ```
