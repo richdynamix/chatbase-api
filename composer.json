@@ -3,7 +3,7 @@
     "description": "PHP SDK Wrapper for the Chatbase API (unofficial)",
     "type": "library",
     "require": {
-        "php" : "^7.0",
+        "php" : "^7.1",
         "guzzlehttp/guzzle": "^6.3",
         "illuminate/contracts": "~5.4.0|~5.5.0",
         "illuminate/support": "~5.4.0|~5.5.0",
