@@ -147,4 +147,21 @@ class FieldsManager
 
         return $this;
     }
+
+    /**
+     * Reset default fields between sends
+     */
+    public function resetFields(): void
+    {
+        $data = $this->data;
+
+        unset($this->data);
+
+        $this->data = [
+            'api_key' => $data['api_key'],
+            'platform' => $data['platform'],
+            'type' => 'user',
+            'time_stamp' => $this->getTimeStamp(),
+        ];
+    }
 }

@@ -116,6 +116,8 @@ class GenericMessage implements Contract
      */
     public function userMessage()
     {
+        $this->fieldsManager->resetFields();
+
         return $this;
     }
 
@@ -124,6 +126,8 @@ class GenericMessage implements Contract
      */
     public function botMessage()
     {
+        $this->fieldsManager->resetFields();
+
         $this->fieldsManager->setType('agent');
 
         return $this;
@@ -134,6 +138,8 @@ class GenericMessage implements Contract
      */
     public function notHandledUserMessage()
     {
+        $this->fieldsManager->resetFields();
+
         $this->fieldsManager->notHandled();
 
         return $this;
